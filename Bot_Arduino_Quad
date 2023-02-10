@@ -1,0 +1,378 @@
+
+  #include <IRremote.h>
+  #include <Servo.h>
+
+int RECV_PIN = 8;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+
+Servo coxaEsquerdaFrente;
+Servo canelaEsquerdaFrente;
+Servo coxaDireitaFrente;
+Servo canelaDireitaFrente;
+Servo canelaDireitaTras;
+Servo coxaDireitaTras;
+Servo coxaEsquerdaTras;
+Servo canelaEsquerdaTras;
+
+int delayTroca = 150;
+void mover(int perna, int parte, int pos){
+// pernas
+// 1 = esquerda frente
+// 2 = direita frente
+// 3 = esquerda tras
+// 4 = direita tras
+// partes
+// 1 coxa
+// 2 canela
+if (parte == 1){ // coxa
+if (perna == 1){ // Esquerda da frente
+coxaEsquerdaFrente.write(30-pos);
+
+}else if(perna == 3){ // Esquerda de Tras
+coxaEsquerdaTras.write(30+pos);
+}else if(perna == 2){ // Direita da Frente
+coxaDireitaFrente.write(30+pos);
+}else if(perna == 4){ // Esquerda da Frente
+coxaDireitaTras.write(30+pos);
+}
+}else{ // canela
+if (perna == 1){ // Esquerda da Frente
+canelaEsquerdaFrente.write(86+pos);
+}else if(perna == 2) { // Direita da Frente
+canelaDireitaFrente.write(86-pos);
+}else if(perna == 3){ // Esquerda de Tras
+canelaEsquerdaTras.write(89+pos);
+}else if (perna == 4){ // Direita de Tras
+canelaDireitaTras.write(86+pos);
+}
+}
+}
+int getVelocidade(int velocidade){
+if (velocidade==1){
+return 50;
+}else if (velocidade==2){
+return 100;
+}else if (velocidade==3){
+return 150;
+}else if (velocidade==4){
+return 350;
+}else if (velocidade==5){
+return 500;
+}else if (velocidade==6){
+return 2000;
+}else{
+return 100;
+}
+}
+void setup()
+{
+ Serial.begin(9600);
+ irrecv.enableIRIn(); // Start the receiver
+ 
+int delayPasso = 50;
+coxaEsquerdaFrente.attach(5);
+canelaEsquerdaFrente.attach(4);
+coxaDireitaFrente.attach(12);
+canelaDireitaFrente.attach(13);
+coxaDireitaTras.attach(11);
+canelaDireitaTras.attach(10);
+coxaEsquerdaTras.attach(6);
+canelaEsquerdaTras.attach(7);
+delay(1000);
+//Fica parado no ponto 0...
+Deitar();
+
+}
+void Deitar(){
+mover(1,1,-60);
+mover(1,2,90);
+mover(2,1,90);
+mover(2,2,80);
+mover(3,1,40);
+mover(3,2,110);
+mover(4,1,25);
+mover(4,2,-50);
+delay(1000);
+}
+void AndarFrente(int Passos,int delayPasso){
+for (int passo=0; passo<Passos; passo++){
+mover(2,2,90);
+mover(3,2,90);
+
+delay(delayPasso);
+mover(1,1,-100);
+mover(2,1,+100);
+mover(3,1,-20);
+mover(4,1,-20);
+delay(delayPasso);
+mover(2,2,50);
+mover(3,2,50);
+delay(delayPasso);
+mover(1,2,90);
+mover(4,2,-50);
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,20);
+mover(3,1,90);
+mover(4,1,70);
+delay(delayPasso);
+mover(1,2,50);
+mover(4,2,-10);
+delay(delayPasso);  
+
+}
+}
+void AndarTras(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(2,2,90);
+mover(3,2,90);
+
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,20);
+mover(3,1,90);
+mover(4,1,70);
+delay(delayPasso);
+mover(2,2,50);
+mover(3,2,50);
+delay(delayPasso);
+mover(1,2,90);
+mover(4,2,-50);
+delay(delayPasso);
+mover(1,1,-100);
+mover(2,1,100);
+mover(3,1,-20);
+mover(4,1,-20);
+delay(delayPasso);
+mover(1,2,50);
+mover(4,2,-10);
+delay(delayPasso);  
+}
+}
+void AndarDireita(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(2,2,90);
+mover(3,2,90);
+delay(delayPasso);
+mover(1,1,-100);
+mover(2,1,+100);
+mover(3,1,-20);
+mover(4,1,-20);
+delay(delayPasso);
+mover(2,2,50);
+mover(3,2,50);
+delay(delayPasso);
+mover(1,2,90);
+mover(4,2,-50);
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,20);
+mover(3,1,90);
+mover(4,1,70);
+delay(delayPasso);
+mover(1,2,50);
+mover(4,2,-10);
+delay(delayPasso);
+}
+}
+void AndarEsquerda(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(2,2,90);
+mover(3,2,90);
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,20);
+mover(3,1,90);
+mover(4,1,70);
+delay(delayPasso);
+mover(2,2,50);
+mover(3,2,50);
+delay(delayPasso);
+mover(1,2,90);
+mover(4,2,-50);
+delay(delayPasso);
+mover(1,1,-100);
+mover(2,1,+100);
+mover(3,1,-20);
+mover(4,1,-20);
+delay(delayPasso);
+mover(1,2,50);
+mover(4,2,-10);
+delay(delayPasso);
+}
+}
+void VirarDireita(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(2,2,90);
+mover(3,2,90);
+delay(delayPasso);
+mover(1,1,-100);
+mover(2,1,+100);
+mover(3,1,90);
+mover(4,1,70);
+delay(delayPasso);
+mover(2,2,50);
+mover(3,2,50);
+delay(delayPasso);
+mover(1,2,90);
+mover(4,2,-50);
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,20);
+mover(3,1,-20);
+mover(4,1,-20);
+delay(delayPasso);
+mover(1,2,50);
+mover(4,2,-10);
+delay(delayPasso);
+}
+}
+void VirarEsquerda(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(2,2,90);
+mover(3,2,90);
+delay(delayPasso);
+mover(1,1,-100);
+mover(2,1,+100);
+mover(3,1,90);
+mover(4,1,70);
+delay(delayPasso);
+mover(2,2,50);
+mover(3,2,50);
+delay(delayPasso);
+mover(1,2,90);
+mover(4,2,-50);
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,20);
+mover(3,1,-20);
+mover(4,1,-20);
+delay(delayPasso);
+mover(1,2,50);
+mover(4,2,-10);
+delay(delayPasso);
+}
+}
+void Alongar(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(1,1,0);
+mover(1,2,0);
+mover(2,1,0);
+mover(2,2,0);
+mover(3,1,0);
+mover(3,2,0);
+mover(4,1,0);
+mover(4,2,0);
+delay(delayPasso);
+mover(1,2,45);
+mover(2,2,45);
+mover(3,2,45);
+mover(4,2,45);
+delay(delayPasso);
+mover(1,2,0);
+mover(2,2,0);
+mover(3,2,0);
+mover(4,2,0);
+delay(delayPasso);
+mover(1,1,90);
+mover(2,1,90);
+mover(3,1,-90);
+mover(4,1,-90);
+delay(delayPasso);
+mover(1,2,45);
+mover(2,2,45);
+mover(3,2,45);
+mover(4,2,45);
+delay(delayPasso);
+mover(1,2,0);
+mover(2,2,0);
+mover(3,2,0);
+mover(4,2,0);
+delay(delayPasso);
+}
+}
+void FlexaoFrente(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(1,1,0);
+mover(1,2,0);
+mover(2,1,0);
+mover(2,2,0);
+mover(3,1,0);
+mover(3,2,0);
+mover(4,1,0);
+mover(4,2,0);
+delay(delayPasso);
+mover(1,2,60);
+mover(2,2,60);
+delay(delayPasso);
+mover(1,2,0);
+mover(2,2,0);
+delay(delayPasso);
+}
+}
+void FlexaoTras(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(1,1,0);
+mover(1,2,0);
+mover(2,1,0);
+mover(2,2,0);
+mover(3,1,0);
+mover(3,2,0);
+mover(4,1,0);
+mover(4,2,0);
+delay(delayPasso);
+mover(3,2,60);
+mover(4,2,60);
+delay(delayPasso);
+mover(3,2,0);
+mover(4,2,0);
+delay(delayPasso);
+}
+}
+void Rastejar(int Passos,int delayPasso){
+  for (int passo=0; passo<Passos; passo++){
+mover(3,1,-90);
+mover(3,2,90);
+mover(4,1,-90);
+mover(4,2,90);
+delay(delayPasso);
+mover(1,1,40);
+mover(2,1,-40);
+delay(delayPasso);
+mover(1,2,0);
+mover(2,2,90);
+delay(delayPasso);
+mover(1,1,-40);
+mover(2,1,40);
+delay(delayPasso);
+mover(1,2,90);
+mover(2,2,0);
+delay(delayPasso);
+}
+}
+void loop()
+{
+ if (irrecv.decode(&results)) {
+    Serial.println(results.value, HEX);
+//Fucoes modificadas   
+    if (results.value == 0x39C6E817){
+      AndarFrente(1,getVelocidade(3));}
+    else if (results.value == 0x39C6C837){
+      AndarTras(1,getVelocidade(3));}
+    else if (results.value == 0x39C600FF){
+      AndarDireita(1,getVelocidade(3));}
+    else if (results.value == 0x39C6807F){
+      AndarEsquerda(1,getVelocidade(3));} 
+    else if (results.value == 0x807226CC){
+      VirarDireita(1,getVelocidade(3));}
+    else if (results.value == 0x8072260F){
+      VirarEsquerda(1,getVelocidade(3));}
+else if (results.value){
+  Deitar();}
+    irrecv.resume(); // Receive the next value
+                                               }   
+                                               
+
+
+}
