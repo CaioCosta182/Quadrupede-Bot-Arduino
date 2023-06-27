@@ -1,4 +1,4 @@
-<h1 align="center"> # Quadrupedi-Bot-Arduino</h1>
+<h1 align="center">Quadrupede-Bot-Arduino</h1>
 
 Este é um projeto de um robô quadrupede que utiliza conceitos de modelagem 3D e 
 é controlado por meio de uma placa Arduino. O objetivo deste repositório é fornecer informações e instruções
